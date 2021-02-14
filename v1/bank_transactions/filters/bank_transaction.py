@@ -13,6 +13,7 @@ class BankTransactionFilter(FilterSet):
             'account_number',
             'block__sender',
             'recipient',
+            'non_fee',
         ]
 
     @staticmethod
@@ -22,3 +23,11 @@ class BankTransactionFilter(FilterSet):
             Q(block__sender=value)
             | Q(recipient=value)
         )
+
+    @staticmethod
+    def filter_non_fee(queryset, _, value):
+        """Filter queryset for non-fee transactions"""
+        if value == "" or value == "1":
+            return queryset.filter(
+                fee__exact='',
+            )
