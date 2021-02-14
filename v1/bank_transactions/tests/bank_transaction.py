@@ -27,6 +27,7 @@ def test_bank_transactions_list(client, bank_transactions, django_assert_max_num
         ('account_number', 'recipient'),
         ('block__sender', 'block.sender'),
         ('recipient', 'recipient'),
+        ('non_fee', 'fee')
     ],
 )
 def test_bank_transactions_filter(client, bank_transactions, field, attribute, django_assert_max_num_queries):
@@ -41,4 +42,5 @@ def test_bank_transactions_filter(client, bank_transactions, field, attribute, d
             },
             expected=HTTP_200_OK,
         )
+    print(response)
     assert response[0]['id'] == str(target_transaction.id)
