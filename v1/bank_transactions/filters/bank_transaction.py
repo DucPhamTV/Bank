@@ -6,7 +6,7 @@ from ..models.bank_transaction import BankTransaction
 
 class BankTransactionFilter(FilterSet):
     account_number = CharFilter(method='filter_account_number')
-    non_fee = CharField(method='filter_non_fee')
+    non_fee = CharFilter(method='filter_non_fee')
 
     class Meta:
         model = BankTransaction
