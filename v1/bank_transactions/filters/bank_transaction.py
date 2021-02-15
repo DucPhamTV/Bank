@@ -6,7 +6,7 @@ from ..models.bank_transaction import BankTransaction
 
 class BankTransactionFilter(FilterSet):
     account_number = CharFilter(method='filter_account_number')
-    non_fee = CharFilter(method='filter_non_fee')
+    fee = CharFilter(method='filter_fee')
 
     class Meta:
         model = BankTransaction
@@ -14,7 +14,7 @@ class BankTransactionFilter(FilterSet):
             'account_number',
             'block__sender',
             'recipient',
-            'non_fee',
+            'fee',
         ]
 
     @staticmethod
@@ -26,9 +26,13 @@ class BankTransactionFilter(FilterSet):
         )
 
     @staticmethod
-    def filter_non_fee(queryset, _, value):
-        """Filter queryset for non-fee transactions"""
-        if value == "" or value == "1":
+    def filter_fee(queryset, name, value):
+        """Filter queryset by fee"""
+        if value == "NONE":
             return queryset.filter(
                 fee__exact='',
             )
+
+        return queryset.filter(
+            fee__exact=value,
+        )
